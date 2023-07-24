@@ -57,6 +57,8 @@ const GamePage = () => {
     
   
     function dragMouseDown(e: any) {
+        elmnt.style.backgroundColor = "red"
+
       e = e || window.event;
       e.preventDefault();
       // get the mouse cursor position at startup:
@@ -90,6 +92,8 @@ const GamePage = () => {
       document.onmousemove = null;
     }
   }
+
+  
 
 
   export default GamePage
