@@ -29,10 +29,9 @@ const GamePage = () => {
       console.log(characters)
     return characters.map((element: any, index: number) => {
         return(
-            <div id={element.id} style={{borderRadius: "5px", padding: "1rem", position: "absolute", left: `${index * 10}%`, backgroundColor: "rgb(66,66,66,.5)"}} key={index}>
-                <img style={{width: "3rem"}} src={element.image}></img>
-                <p>{element.character}</p>
-                <p>{element.player}</p> 
+            <div id={element.id} style={{color: "white", borderRadius: "5px", padding: ".25rem", position: "absolute", left: `${index * 10}%`, backgroundColor: "rgb(33,33,33,.5)"}} key={index}>
+                <img style={{padding: "0px", margin: "0px", width: "1.5rem"}} src={element.image}></img>
+                <p style={{padding: "0px", margin: "0px", fontSize: ".5rem"}}> {element.character}</p>
             </div>
         )
     });

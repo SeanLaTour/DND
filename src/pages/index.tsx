@@ -212,10 +212,10 @@ const loadMap = () => {
 
 const characterInfoCard = (characterData: { player: string, image: string, character: string, id: string}, characterList: any,setCharInfo: Function, setCharacterList: Function, key: number) => {
   return(
-    <div key={key} style={{width: "20rem", margin: "1rem", borderRadius: "5px", padding: "1rem", display: "flex", flexDirection: "row", backgroundColor: "#222"}}>
+    <div key={key} style={{width: "fit-content", margin: "1rem", borderRadius: "5px", padding: "1rem", display: "flex", flexDirection: "row", backgroundColor: "#222"}}>
       <img style={{borderStyle: "solid", borderRadius: "3px", borderColor: "white", width: "6rem"}} src={characterData.image}></img>
-      <div style={{justifyContent: "space-evenly", marginLeft: "1rem", display: "flex", flexDirection: "column", color: "white"}}>
-      <p>{characterData.character}</p><p style={{fontSize: ".75rem"}}>{characterData.player}</p><button onClick={(event) => {
+      <div style={{justifyContent: "space-between", marginLeft: "1rem", display: "flex", flexDirection: "column", color: "white"}}>
+      <p>{characterData.character}</p><p style={{fontSize: ".75rem"}}>{characterData.player}</p><button style={{borderRadius: "5px", backgroundColor: "burlywood"}} onClick={(event) => {
         deleteCharacter(characterList, setCharacterList, setCharInfo, event.target)
       }} id={characterData.id}>Delete</button>
       </div>
