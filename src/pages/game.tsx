@@ -53,6 +53,7 @@ const GamePage = () => {
 
       // otherwise, move the DIV from anywhere inside the DIV:
       elmnt.onmousedown = dragMouseDown;
+      elmnt.ontouchstart = dragMouseDown;
     
   
     function dragMouseDown(e: any) {
@@ -65,7 +66,7 @@ const GamePage = () => {
       document.ontouchend = closeDragElement;
       // call a function whenever the cursor moves:
       document.onmousemove = elementDrag;
-      document.ontouchstart = elementDrag;
+      document.ontouchmove = elementDrag;
     }
   
     function elementDrag(e: any) {
@@ -84,7 +85,7 @@ const GamePage = () => {
     function closeDragElement() {
       // stop moving when mouse button is released:
       document.ontouchend = null;
-      document.ontouchstart = null;
+      document.ontouchmove = null;
       document.onmouseup = null;
       document.onmousemove = null;
     }
