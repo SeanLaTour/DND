@@ -74,16 +74,16 @@ const GamePage = () => {
     function elementDrag(e: any) {
       elmnt.style.backgroundColor = "yellow"
 
-      e = e || window.event;
-      e.preventDefault();
-      // calculate the new cursor position:
-      pos1 = pos3 - e.clientX;
-      pos2 = pos4 - e.clientY;
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      // set the element's new position:
-      elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-      elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    //   e = e || window.event;
+    //   e.preventDefault();
+    //   // calculate the new cursor position:
+    //   pos1 = pos3 - e.clientX;
+    //   pos2 = pos4 - e.clientY;
+    //   pos3 = e.clientX;
+    //   pos4 = e.clientY;
+    //   // set the element's new position:
+    //   elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    //   elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
 
       e = e || window.event;
       e.preventDefault();
