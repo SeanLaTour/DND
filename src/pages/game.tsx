@@ -87,8 +87,6 @@ const GamePage = () => {
       }
   
     function elementDragMobile(e: any) {
-      elmnt.style.backgroundColor = "yellow"
-
       e = e || window.event;
       e.preventDefault();
       // calculate the new cursor position:
