@@ -62,8 +62,10 @@ const GamePage = () => {
       pos3 = e.clientX;
       pos4 = e.clientY;
       document.onmouseup = closeDragElement;
+      document.ontouchend = closeDragElement;
       // call a function whenever the cursor moves:
       document.onmousemove = elementDrag;
+      document.ontouchstart = elementDrag;
     }
   
     function elementDrag(e: any) {
@@ -81,6 +83,8 @@ const GamePage = () => {
   
     function closeDragElement() {
       // stop moving when mouse button is released:
+      document.ontouchend = null;
+      document.ontouchstart = null;
       document.onmouseup = null;
       document.onmousemove = null;
     }
