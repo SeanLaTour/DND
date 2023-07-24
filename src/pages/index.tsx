@@ -139,25 +139,21 @@ const links = [
 const IndexPage: React.FC<PageProps> = () => {
   const [characterList, setCharacterList]: any = React.useState([])
   const [characterInfoCards, setCharacterInfoCards] = React.useState([])
-  console.log("cards", characterInfoCards)
-
-  React.useEffect(() => {
-
-  },[characterInfoCards])
 
   return (
-    <div style={{overflow: "scroll", width: "100vw", height: "100vh", background: "linear-gradient(to right, #868f96 0%, #596164 100%)", display: "flex", justifyContent: "center", flexDirection: "column", width: "100%", alignItems: "center"}}>
-      <h1>
-        DnDF5
-      </h1>
-      <div>
-        <input>
+    <div style={{overflow: "scroll", width: "100vw", height: "100vh", backgroundImage: 'url("https://cdn.wallpapersafari.com/70/63/GIAqgF.jpg")', backgroundSize: "cover", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
+      <div  style={{display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center", width: "100%"}}>
+      <div style={{padding: "2rem", display: "flex", flexDirection: "column", width: "20rem", color: "white", justifyContent: "center", backgroundColor: "rgb(22,22,22,.5)"}}>
+      <h3 style={{width: "100%", textAlign: "center"}}>
+          Add Characters
+        </h3>
+        <div style={{display: "flex", flexDirection: "row"}}>
+        <input id="map-input">
         </input>
-        <button>
+        <button onClick={loadMap}>
           Load Map
         </button>
-      </div>
-      <div>
+        </div>
       <input placeholder="Player" id="add-player-input">
         </input>
         <input placeholder="Character Name" id="add-character-input">
@@ -165,56 +161,79 @@ const IndexPage: React.FC<PageProps> = () => {
         <input placeholder="Character Image" id="add-character-image-input">
         </input>
         <button onClick={() => {
-          setCharacterList(addCharacter(characterList, setCharacterInfoCards))
+          setCharacterList(addCharacter(characterList, setCharacterInfoCards, setCharacterList))
         }} id="add-character-button">
           Load Character
         </button>
+        <div>
+          <a style={{color: "white"}} href="/game">Start</a>
+        </div>
       </div>
-      <div>
-        <h3>
-          Character List
-        </h3>
-        <div style={{display: "flex", flexDirection: "column"}} id="character-list">
+      <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "50%"}}>
+        <div style={{overflow: "scroll", display: "flex", flexDirection: "column"}} id="character-list">
           {characterInfoCards}
         </div>
+      </div>
       </div>
     </div>
   )
 }
 
 
-function addCharacter(characterList: any, setCharacters: Function): { player: string, image: string, character: string}[] {
+function addCharacter(characterList: any, setCharactersInfo: Function, setCharacterData: Function): { player: string, image: string, character: string, id: string}[] {
   const characterInput = document.getElementById("add-character-input")! as HTMLInputElement;
   const characterImageInput = document.getElementById("add-character-image-input")! as HTMLInputElement;
   const characterPlayerInput = document.getElementById("add-player-input")! as HTMLInputElement;
-  const characterListEl = document.getElementById("character-list")! as HTMLElement;
   const character = {
     player: characterPlayerInput.value,
     character: characterInput.value,
     image: characterImageInput.value,
+    id: Math.random()
   }
 
   characterList.push(character)
-  console.log("characterList: ", characterList)
 
-  const characterCardList = characterList.map(ch => {
-    return characterInfoCard(ch)
+  const characterCardList = characterList.map((ch: any, index: number) => {
+    return characterInfoCard(ch, characterList, setCharactersInfo, setCharacterData, index)
   })
 
-  setCharacters(characterCardList)
+  setCharactersInfo(characterCardList)
+
+  console.log("char", JSON.stringify(characterList))
+  window.localStorage.setItem("characters", JSON.stringify(characterList))
 
   return characterList;
 }
 
-const characterInfoCard = (characterData: { player: string, image: string, character: string}) => {
+const loadMap = () => {
+  const map = document.getElementById("map-input")! as HTMLInputElement;
+  window.localStorage.setItem("map", map.value)
+}
+
+const characterInfoCard = (characterData: { player: string, image: string, character: string, id: string}, characterList: any,setCharInfo: Function, setCharacterList: Function, key: number) => {
   return(
-    <div style={{width: "20rem", margin: "1rem", borderRadius: "5px", padding: "1rem", display: "flex", flexDirection: "row", backgroundColor: "#222"}}>
+    <div key={key} style={{width: "20rem", margin: "1rem", borderRadius: "5px", padding: "1rem", display: "flex", flexDirection: "row", backgroundColor: "#222"}}>
       <img style={{borderStyle: "solid", borderRadius: "3px", borderColor: "white", width: "6rem"}} src={characterData.image}></img>
       <div style={{justifyContent: "space-evenly", marginLeft: "1rem", display: "flex", flexDirection: "column", color: "white"}}>
-      <p>{characterData.character}</p><p style={{fontSize: ".75rem"}}>{characterData.player}</p><button>Delete</button>
+      <p>{characterData.character}</p><p style={{fontSize: ".75rem"}}>{characterData.player}</p><button onClick={(event) => {
+        deleteCharacter(characterList, setCharacterList, setCharInfo, event.target)
+      }} id={characterData.id}>Delete</button>
       </div>
     </div>
   )
+}
+
+const deleteCharacter = (characterData: any, setCharacters: Function, setCharInfo: Function, buttonId: any) => {
+  const returnChars = characterData.filter((character: any) => {
+    console.log(character.id.toString(), buttonId.id.toString())
+    return character.id.toString() !== buttonId.id.toString()
+  })
+
+  const characterCardList = returnChars.map((ch: any, index: number) => {
+    return characterInfoCard(ch, characterData, setCharInfo, setCharacters, index)
+  })
+  setCharInfo(characterCardList)
+  setCharacters(returnChars)
 }
 
 export default IndexPage
