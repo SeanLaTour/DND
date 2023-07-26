@@ -188,7 +188,7 @@ function addCharacter(characterList: any, setCharactersInfo: Function, setCharac
     player: characterPlayerInput.value,
     character: characterInput.value,
     image: characterImageInput.value,
-    id: Math.random()
+    id: characterPlayerInput.value
   }
 
   characterList.push(character)

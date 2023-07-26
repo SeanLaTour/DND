@@ -17,20 +17,23 @@ const GamePage = () => {
         setCharacterElements(characterGenerate(characters))
         setTimeout(() => {
             addEventListenersToCharacters(characters)!
-        }, 3000);
+        }, 500);
     },[map])
 
     useEffect(() => {
       socket.on("recieve_message", (data: any) => {
-        if(data) {
-          const character = document.getElementById(data.dimensions.characterId) as HTMLDivElement;
-          character!.style.left = data.dimensions.left + "px";
-
-          console.log("character", character)
+        console.log("DATA: ", data.dimensions)
+        const charData = data.dimensions
+        for(let i = 0; i < charData.length; i++) {
+          const characterData = charData[i]
+          const character = document.getElementById(characterData.characterId) as HTMLDivElement;
+          console.log(character)
+          character!.style.top = characterData.top + "px";
+          character!.style.left = characterData.left + "px";
         }
       })
     },[socket])
- 
+
   
     return (
       <div style={{width: "100vw", height: "100vh", backgroundImage: `url("${map}")`, backgroundSize: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
@@ -46,18 +49,17 @@ const GamePage = () => {
   const sendMessage = () => {
     const message = document.getElementById("input-chat")! as HTMLInputElement;
     const characters = document.getElementsByClassName("character-element")
+    const charArray = [];
     for(let i = 0; i < characters.length; i++) {
       const character = characters[i];
       const dimensions = character.getClientRects();
       console.log(dimensions)
-      const characterPostObject = {
-        dimensions: {left: dimensions[0].left, top: dimensions[0].top, chracterId: character.id}
-      }
+      const charDimensions = {left: dimensions[0].left, top: dimensions[0].top, characterId: character.id}
+      charArray.push(charDimensions)
     }
     socket.emit("send_message", {
-    message: message!.value,
-      dimensions: {left: 185, top: 252, characterId: "sean"}
-      
+      message: message!.value,
+      dimensions: charArray
     })
   }
 
@@ -65,7 +67,7 @@ const GamePage = () => {
       console.log(characters)
     return characters.map((element: any, index: number) => {
         return(
-            <div className={"character-element"} id="sean" style={{color: "white", borderRadius: "5px", padding: ".25rem", position: "absolute", left: `${index * 10}%`, backgroundColor: "rgb(33,33,33,.5)"}} key={index}>
+            <div className={"character-element"} id={element.player} style={{color: "white", borderRadius: "5px", padding: ".25rem", position: "absolute", left: `${index * 10}%`, backgroundColor: "rgb(33,33,33,.5)"}} key={index}>
                 <img style={{padding: "0px", margin: "0px", width: "1.5rem"}} src={element.image}></img>
                 <p style={{padding: "0px", margin: "0px", fontSize: ".5rem"}}> {element.character}</p>
             </div>
