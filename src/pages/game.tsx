@@ -18,6 +18,7 @@ const GamePage = () => {
         setTimeout(() => {
             addEventListenersToCharacters(characters)!
         }, 500);
+        document.addEventListener("mouseup", sendMessage)
     },[map])
 
     useEffect(() => {
@@ -38,27 +39,20 @@ const GamePage = () => {
     return (
       <div style={{width: "100vw", height: "100vh", backgroundImage: `url("${map}")`, backgroundSize: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
           {characterElements}
-          <input id="input-chat" placeholder="Chat...">
-
-          </input>
-          <button onClick={sendMessage}>CLICK</button>
       </div>
     )
   }
 
   const sendMessage = () => {
-    const message = document.getElementById("input-chat")! as HTMLInputElement;
     const characters = document.getElementsByClassName("character-element")
     const charArray = [];
     for(let i = 0; i < characters.length; i++) {
       const character = characters[i];
       const dimensions = character.getClientRects();
-      console.log(dimensions)
       const charDimensions = {left: dimensions[0].left, top: dimensions[0].top, characterId: character.id}
       charArray.push(charDimensions)
     }
     socket.emit("send_message", {
-      message: message!.value,
       dimensions: charArray
     })
   }
