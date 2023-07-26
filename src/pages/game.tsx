@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import io from "socket.io-client"
 
 // @ts-ignore
-const socket = io.connect("http://localhost:3000")
+const socket = io.connect("https://main--coruscating-croissant-bb7569.netlify.app/functions/api.js")
 
 const GamePage = () => {
     const [map, setMap]: any = React.useState("")
