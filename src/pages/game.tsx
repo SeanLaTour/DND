@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react"
+import io from "socket.io-client"
+
+// @ts-ignore
+const socket = io.connect("http://localhost:3000")
 
 const GamePage = () => {
     const [map, setMap]: any = React.useState("")
@@ -13,23 +17,55 @@ const GamePage = () => {
         setCharacterElements(characterGenerate(characters))
         setTimeout(() => {
             addEventListenersToCharacters(characters)!
-        }, 1000);
-        console.log("hey")
+        }, 3000);
     },[map])
 
+    useEffect(() => {
+      socket.on("recieve_message", (data: any) => {
+        if(data) {
+          const character = document.getElementById(data.dimensions.characterId) as HTMLDivElement;
+          character!.style.left = data.dimensions.left + "px";
+
+          console.log("character", character)
+        }
+      })
+    },[socket])
+ 
   
     return (
       <div style={{width: "100vw", height: "100vh", backgroundImage: `url("${map}")`, backgroundSize: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
           {characterElements}
+          <input id="input-chat" placeholder="Chat...">
+
+          </input>
+          <button onClick={sendMessage}>CLICK</button>
       </div>
     )
+  }
+
+  const sendMessage = () => {
+    const message = document.getElementById("input-chat")! as HTMLInputElement;
+    const characters = document.getElementsByClassName("character-element")
+    for(let i = 0; i < characters.length; i++) {
+      const character = characters[i];
+      const dimensions = character.getClientRects();
+      console.log(dimensions)
+      const characterPostObject = {
+        dimensions: {left: dimensions[0].left, top: dimensions[0].top, chracterId: character.id}
+      }
+    }
+    socket.emit("send_message", {
+    message: message!.value,
+      dimensions: {left: 185, top: 252, characterId: "sean"}
+      
+    })
   }
 
   const characterGenerate = (characters: any) => {
       console.log(characters)
     return characters.map((element: any, index: number) => {
         return(
-            <div id={element.id} style={{color: "white", borderRadius: "5px", padding: ".25rem", position: "absolute", left: `${index * 10}%`, backgroundColor: "rgb(33,33,33,.5)"}} key={index}>
+            <div className={"character-element"} id="sean" style={{color: "white", borderRadius: "5px", padding: ".25rem", position: "absolute", left: `${index * 10}%`, backgroundColor: "rgb(33,33,33,.5)"}} key={index}>
                 <img style={{padding: "0px", margin: "0px", width: "1.5rem"}} src={element.image}></img>
                 <p style={{padding: "0px", margin: "0px", fontSize: ".5rem"}}> {element.character}</p>
             </div>
