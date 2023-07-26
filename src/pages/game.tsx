@@ -19,6 +19,7 @@ const GamePage = () => {
             addEventListenersToCharacters(characters)!
         }, 500);
         document.addEventListener("mouseup", sendMessage)
+        document.addEventListener("touchend", sendMessage)
     },[map])
 
     useEffect(() => {
