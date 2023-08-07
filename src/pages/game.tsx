@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import "../css/character.css"
 import io from "socket.io-client"
 
 // @ts-ignore
@@ -24,7 +25,6 @@ const GamePage = () => {
 
     useEffect(() => {
       socket.on("recieve_message", (data: any) => {
-        console.log("DATA: ", data.dimensions)
         const charData = data.dimensions
         for(let i = 0; i < charData.length; i++) {
           const characterData = charData[i]
@@ -38,7 +38,7 @@ const GamePage = () => {
 
   
     return (
-      <div style={{width: "100vw", height: "100vh", backgroundImage: `url("${map}")`, backgroundSize: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
+      <div style={{width: "1400px", height: "800px", backgroundImage: `url("${map}")`, backgroundSize: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
           {characterElements}
       </div>
     )
@@ -62,7 +62,7 @@ const GamePage = () => {
       console.log(characters)
     return characters.map((element: any, index: number) => {
         return(
-            <div className={"character-element"} id={element.player} style={{color: "white", borderRadius: "5px", padding: ".25rem", position: "absolute", left: `${index * 10}%`, backgroundColor: "rgb(33,33,33,.5)"}} key={index}>
+            <div className={"character-element character-card"} id={element.player} style={{color: "white", borderRadius: "5px", padding: ".25rem", position: "absolute", left: `${index * 10}%`, backgroundColor: "rgb(33,33,33,.5)"}} key={index}>
                 <img style={{padding: "0px", margin: "0px", width: "1.5rem"}} src={element.image}></img>
                 <p style={{padding: "0px", margin: "0px", fontSize: ".5rem"}}> {element.character}</p>
             </div>
@@ -75,6 +75,12 @@ const GamePage = () => {
         const characterCard = document.getElementById(`${character.id}`)
         if(characterCard) {
             dragElement(characterCard) 
+            characterCard.addEventListener("mousedown", (event) => {
+              characterCard.style.opacity = ".25";
+            })
+            characterCard.addEventListener("mouseup", (event) => {
+              characterCard.style.opacity = "1";
+            })
         }
     })
   } 
