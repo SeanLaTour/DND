@@ -1,6 +1,6 @@
 import * as React from "react"
 import type { HeadFC, PageProps } from "gatsby"
-const API = "https://dnd-socket-server-851241f4eb52.herokuapp.com/"
+const API = "https://dnd-socket-server-851241f4eb52.herokuapp.com"
 
 const IndexPage: React.FC<PageProps> = () => {
   const [characterList, setCharacterList]: any = React.useState([])

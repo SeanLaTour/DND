@@ -3,7 +3,7 @@ import "../css/character.css"
 import io from "socket.io-client"
 import $ from 'jquery';
 
-const API = "https://dnd-socket-server-851241f4eb52.herokuapp.com/"
+const API = "https://dnd-socket-server-851241f4eb52.herokuapp.com"
 
 // @ts-ignore
 const socket = io.connect(API)
