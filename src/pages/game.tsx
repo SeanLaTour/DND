@@ -1,26 +1,40 @@
 import React, { useEffect, useState } from "react"
 import "../css/character.css"
 import io from "socket.io-client"
+import $ from 'jquery';
+
+// const API = "https://dnd-socket-server-851241f4eb52.herokuapp.com/"
+const API = "http://localhost:3000"
 
 // @ts-ignore
-const socket = io.connect("https://dnd-socket-server-851241f4eb52.herokuapp.com/")
+const socket = io.connect(API)
 
 const GamePage = () => {
     const [map, setMap]: any = React.useState("")
     const [characters, setCharacters] = React.useState([])
     const [characterElements, setCharacterElements] = React.useState([])
 
+    function setMapFromAPI() {
+      $.get(API + "/map", res => {
+        console.log("get res: ", res)
+        setMap(res.map)
+      })
+    }
+
     useEffect(() => {
-        const storageCharacters = JSON.parse(window.localStorage.getItem("characters")!)
-        const storageMap = window.localStorage.getItem("map")!
-        setMap(storageMap)
-        setCharacters(storageCharacters)
+        $.get(API + "/characters").done(res => {
+          if(res.characters) {
+            setCharacters(JSON.parse(res.characters))
+          }
+        })
+
         setCharacterElements(characterGenerate(characters))
         setTimeout(() => {
             addEventListenersToCharacters(characters)!
         }, 500);
         document.addEventListener("mouseup", sendMessage)
         document.addEventListener("touchend", sendMessage)
+        setMapFromAPI()
     },[map])
 
     useEffect(() => {
@@ -40,6 +54,7 @@ const GamePage = () => {
     return (
       <div style={{width: "1400px", height: "800px", backgroundImage: `url("${map}")`, backgroundSize: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
           {characterElements}
+          <button style={{position: "fixed", bottom: "0px", right: "0px"}} onClick={setMapFromAPI}>Update Map</button>
       </div>
     )
   }
@@ -59,7 +74,6 @@ const GamePage = () => {
   }
 
   const characterGenerate = (characters: any) => {
-      console.log(characters)
     return characters.map((element: any, index: number) => {
         return(
             <div className={"character-element character-card"} id={element.player} style={{color: "white", borderRadius: "5px", padding: ".25rem", position: "absolute", left: `${index * 10}%`, backgroundColor: "rgb(33,33,33,.5)"}} key={index}>
@@ -146,7 +160,6 @@ const GamePage = () => {
     }
   }
 
-  
 
 
   export default GamePage
