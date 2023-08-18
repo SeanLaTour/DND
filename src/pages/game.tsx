@@ -18,6 +18,11 @@ const GamePage = () => {
         console.log("get res: ", res)
         setMap(res.map)
       })
+      $.get(API + "/characters").done(res => {
+        if(res.characters) {
+          setCharacters(JSON.parse(res.characters))
+        }
+      })
     }
 
     useEffect(() => {
