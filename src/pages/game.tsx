@@ -4,8 +4,8 @@ import io from "socket.io-client"
 import $ from 'jquery';
 import { FaSyncAlt } from "react-icons/fa"
 
-// const API = "https://dnd-socket-server-851241f4eb52.herokuapp.com"
-const API = "http://localhost:3000"
+const API = "https://dnd-socket-server-851241f4eb52.herokuapp.com" 
+// const API = "http://localhost:3000"
 
 
 // @ts-ignore
@@ -254,7 +254,7 @@ const GamePage = () => {
 
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0; 
 
-      // otherwise, move the DIV from anywhere inside the DIV:
+      // otherwise, move the DIV from anywhere inside the DIV
       elmnt.onmousedown = dragMouseDown;
       elmnt.ontouchstart = dragMouseDown;
     
