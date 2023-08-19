@@ -84,7 +84,7 @@ const GamePage = () => {
   
     return (
       <>
-        <div id="game-map" style={{width: "1400px", height: "800px", backgroundImage: `url("${map}")`, backgroundSize: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
+        <div id="game-map" style={{width: "100vw", height: "100vh", backgroundImage: `url("${map}")`, backgroundSize: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
             {characterElements}
             <button style={{position: "fixed", bottom: "0px", right: "0px"}} onClick={setMapFromAPI}>Update Map</button>
             <button style={{position: "fixed", bottom: "0px", left: "0px"}} onClick={handleFullscreenToggle}>Full Screen</button>
