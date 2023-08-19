@@ -4,8 +4,8 @@ import io from "socket.io-client"
 import $ from 'jquery';
 import { FaSyncAlt } from "react-icons/fa"
 
-const API = "https://dnd-socket-server-851241f4eb52.herokuapp.com"
-// const API = "http://localhost:3000"
+// const API = "https://dnd-socket-server-851241f4eb52.herokuapp.com"
+const API = "http://localhost:3000"
 
 
 // @ts-ignore
@@ -16,6 +16,7 @@ const GamePage = () => {
     const [characters, setCharacters] = React.useState([])
     const [characterElements, setCharacterElements] = React.useState([])
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const [mapList, setMapList] = useState([])
 
     const handleFullscreenToggle = () => {
     const targetElement = document.getElementById("game-map")! as HTMLDivElement;
@@ -55,12 +56,26 @@ const GamePage = () => {
         .catch(error => {
           console.error('Error:', error);
         });
+      
+        fetch(API + "/map-list", options)
+          .then(data => {
+            console.log('Response from server:', data);
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
     }
 
     useEffect(() => {
         $.get(API + "/characters").done(res => {
           if(res.characters) {
             setCharacters(JSON.parse(res.characters))
+          }
+        })
+
+        $.get(API + "/map-list").done(res => {
+          if(res.mapList) {
+            setMapList(res.mapList)
           }
         })
 
@@ -118,7 +133,29 @@ const GamePage = () => {
 
         <div id="menu-modal" style={{display: "none", position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundColor: "black", zIndex: 999999, justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
           <h1>Menu</h1>
-          <h4>Update Map</h4>
+          <div style={{backgroundColor: "#222", borderStyle: "solid", borderColor: "white", paddingBlock: ".5rem", borderRadius: "3px", width: "75vw", height: "25vh", overflow: "scroll", display: "grid", gridTemplateColumns: 'repeat(3, 1fr)', marginBottom: "1rem"}}>
+          {mapList.map(map => {
+            return(
+              <img onClick={() => {
+                const options = {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'text/plain'
+                  },
+                  body: map
+                };
+              
+                fetch(API + "/map", options)
+                  .then(data => {
+                    console.log('Response from server:', data);
+                  })
+                  .catch(error => {
+                    console.error('Error:', error);
+                  });
+              }} style={{width: "17.5vw", borderStyle: "solid", margin: "1rem"}} src={map}></img>
+            )
+          })}
+          </div>
           <textarea placeholder="Enter map url..." style={{width: "75vw", height: "25vh"}} id="map-text-area"></textarea>
           <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={setMapFromAPI}>Update Map</button>
           <button style={{color: "black", width:  "75vw", marginTop: "2rem", padding: "1rem"}} onClick={closeMenuModal}>Close</button>
