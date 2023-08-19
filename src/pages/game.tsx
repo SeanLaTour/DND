@@ -12,6 +12,28 @@ const GamePage = () => {
     const [map, setMap]: any = React.useState("")
     const [characters, setCharacters] = React.useState([])
     const [characterElements, setCharacterElements] = React.useState([])
+    const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const handleFullscreenToggle = () => {
+    const targetElement = document.getElementById("game-map")! as HTMLDivElement;
+
+    if (targetElement) {
+      if (!isFullscreen) {
+        if (targetElement.requestFullscreen) {
+          targetElement.requestFullscreen();
+        } else if (targetElement.requestFullscreen) {
+          targetElement.requestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+      setIsFullscreen(!isFullscreen);
+    }
+  }
 
     function setMapFromAPI() {
       $.get(API + "/map", res => {
@@ -56,9 +78,10 @@ const GamePage = () => {
 
   
     return (
-      <div style={{width: "1400px", height: "800px", backgroundImage: `url("${map}")`, backgroundSize: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
+      <div id="game-map" style={{width: "1400px", height: "800px", backgroundImage: `url("${map}")`, backgroundSize: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
           {characterElements}
           <button style={{position: "fixed", bottom: "0px", right: "0px"}} onClick={setMapFromAPI}>Update Map</button>
+          <button style={{position: "fixed", bottom: "0px", left: "0px"}} onClick={handleFullscreenToggle}>Full Screen</button>
       </div>
     )
   }
