@@ -12,12 +12,12 @@ const API = "https://dnd-socket-server-851241f4eb52.herokuapp.com"
 const socket = io.connect(API)
 
 const GamePage = () => {
-    const [map, setMap]: any = React.useState("")
+    const [map, setMap]: any = React.useState("https://w0.peakpx.com/wallpaper/352/733/HD-wallpaper-storm-bringer-wings-lighting-danger-ocean-sailing-beautiful-sky-dragon-storm-sea-hayaken-water-ship-dark-sea-monster-night.jpg")
     const [characters, setCharacters] = React.useState([])
     const [characterElements, setCharacterElements] = React.useState([])
     const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const handleFullscreenToggle = () => {
+    const handleFullscreenToggle = () => {
     const targetElement = document.getElementById("game-map")! as HTMLDivElement;
 
     if (targetElement) {
@@ -39,15 +39,32 @@ const GamePage = () => {
   }
 
     function setMapFromAPI() {
-      $.get(API + "/map", res => {
-        console.log("get res: ", res)
-        setMap(res.map)
-      })
-      $.get(API + "/characters").done(res => {
-        if(res.characters) {
-          setCharacters(JSON.parse(res.characters))
-        }
-      })
+      const mapInput = document.getElementById("map-text-area") as HTMLInputElement;
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: mapInput.value
+      };
+    
+      fetch(API + "/map", options)
+        .then(data => {
+          console.log('Response from server:', data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      setTimeout(() => {
+        $.get(API + "/map", res => {
+          setMap(res.map)
+        })
+        $.get(API + "/characters").done(res => {
+          if(res.characters) {
+            setCharacters(JSON.parse(res.characters))
+          }
+        })
+      },1000)
     }
 
     useEffect(() => {
@@ -63,7 +80,9 @@ const GamePage = () => {
         }, 500);
         document.addEventListener("mouseup", sendMessage)
         document.addEventListener("touchend", sendMessage)
-        setMapFromAPI()
+        setInterval(() => {
+          setMapFromAPI()
+        },60000)
     },[map])
 
     useEffect(() => {
@@ -87,16 +106,35 @@ const GamePage = () => {
       <>
         <div id="game-map" style={{width: "100vw", height: "100vh", backgroundImage: `url("${map}")`, backgroundSize: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
             {characterElements}
-            <button style={{position: "fixed", bottom: "0px", right: "0px"}} onClick={setMapFromAPI}>Update Map</button>
             <button style={{position: "fixed", bottom: "0px", left: "0px"}} onClick={handleFullscreenToggle}>Full Screen</button>
         </div>
-        <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", backgroundColor: "black", zIndex: 9999, opacity: ".75", display: "flex", justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
-          <h3>To move your character, turn your phone to a landscape position and go full screen.</h3>
+        <div style={{position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundColor: "black", zIndex: 9999, opacity: ".75", display: "flex", justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
+          <h3 style={{textAlign: "center", width: "75%" }}>To move your character, turn your phone to a landscape position and go full screen.</h3>
           <FaSyncAlt className="enlarged-icon" style={{marginBottom: "2.5rem", marginTop: "1.5rem", fontSize: "10vw"}} />
           <button onClick={handleFullscreenToggle}>Full Screen</button>
+          <button onClick={openMenuModal}>Menu</button>
+
+        </div>
+
+        <div id="menu-modal" style={{display: "none", position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundColor: "black", zIndex: 999999, justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
+          <textarea id="map-text-area"></textarea>
+          <button style={{color: "black"}} onClick={setMapFromAPI}>Update Map</button>
+          <button style={{color: "black"}} onClick={closeMenuModal}>Close</button>
         </div>
       </>
     )
+  }
+
+  function openMenuModal() {
+    const menuModal = document.getElementById("menu-modal")! as HTMLDivElement;
+    menuModal!.style.display = "flex";
+    console.log(menuModal)
+  }
+
+  function closeMenuModal() {
+    const menuModal = document.getElementById("menu-modal")! as HTMLDivElement;
+    menuModal!.style.display = "none";
+    console.log(menuModal)
   }
 
   function viewportToPixels(percentage: number, unit: 'vh' | 'vw'): number {
