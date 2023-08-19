@@ -81,8 +81,15 @@ const GamePage = () => {
         document.addEventListener("mouseup", sendMessage)
         document.addEventListener("touchend", sendMessage)
         setInterval(() => {
-          setMapFromAPI()
-        },60000)
+          $.get(API + "/map", res => {
+            setMap(res.map)
+          })
+          $.get(API + "/characters").done(res => {
+            if(res.characters) {
+              setCharacters(JSON.parse(res.characters))
+            }
+          })
+        },10000)
     },[map])
 
     useEffect(() => {
@@ -109,17 +116,20 @@ const GamePage = () => {
             <button style={{position: "fixed", bottom: "0px", left: "0px"}} onClick={handleFullscreenToggle}>Full Screen</button>
         </div>
         <div style={{position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundColor: "black", zIndex: 9999, opacity: ".75", display: "flex", justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
-          <h3 style={{textAlign: "center", width: "75%" }}>To move your character, turn your phone to a landscape position and go full screen.</h3>
-          <FaSyncAlt className="enlarged-icon" style={{marginBottom: "2.5rem", marginTop: "1.5rem", fontSize: "10vw"}} />
-          <button onClick={handleFullscreenToggle}>Full Screen</button>
-          <button onClick={openMenuModal}>Menu</button>
-
+          <div style={{height: "75vh", backgroundColor: "#222", textAlign: "center", width: "75vw", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", padding: "1.5rem", borderRadius: "3px" }}>
+            <h3 >To move your character, turn your phone to a landscape position and go full screen.</h3>
+            <FaSyncAlt className="enlarged-icon" style={{marginBottom: "2.5rem", marginTop: "1.5rem", fontSize: "25vw"}} />
+            <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={handleFullscreenToggle}>Full Screen</button>
+            <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={openMenuModal}>Menu</button>
+          </div>
         </div>
 
         <div id="menu-modal" style={{display: "none", position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundColor: "black", zIndex: 999999, justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
-          <textarea id="map-text-area"></textarea>
-          <button style={{color: "black"}} onClick={setMapFromAPI}>Update Map</button>
-          <button style={{color: "black"}} onClick={closeMenuModal}>Close</button>
+          <h1>Menu</h1>
+          <h4>Update Map</h4>
+          <textarea placeholder="Enter map url..." style={{width: "75vw", height: "25vh"}} id="map-text-area"></textarea>
+          <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={setMapFromAPI}>Update Map</button>
+          <button style={{color: "black", width:  "75vw", marginTop: "2rem", padding: "1rem"}} onClick={closeMenuModal}>Close</button>
         </div>
       </>
     )
