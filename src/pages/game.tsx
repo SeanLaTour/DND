@@ -4,6 +4,8 @@ import io from "socket.io-client"
 import $ from 'jquery';
 
 const API = "https://dnd-socket-server-851241f4eb52.herokuapp.com"
+// const API = "http://localhost:3000"
+
 
 // @ts-ignore
 const socket = io.connect(API)
@@ -70,8 +72,10 @@ const GamePage = () => {
           const characterData = charData[i]
           const character = document.getElementById(characterData.characterId) as HTMLDivElement;
           console.log(character)
-          character!.style.top = viewportToPixels(characterData.top, "vh") + "px";
-          character!.style.left = viewportToPixels(characterData.left, "vw") + "px";
+          console.log(characterData)
+          console.log(viewportToPixels(characterData.top, "vh") + "px")
+          character!.style.top = viewportToPixels(characterData.top.toString().split("v")[0], "vh") + "px";
+          character!.style.left = viewportToPixels(characterData.left.toString().split("v")[0], "vw") + "px";
         }
       })
     },[socket])
