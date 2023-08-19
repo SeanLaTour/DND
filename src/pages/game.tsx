@@ -70,8 +70,8 @@ const GamePage = () => {
           const characterData = charData[i]
           const character = document.getElementById(characterData.characterId) as HTMLDivElement;
           console.log(character)
-          character!.style.top = characterData.top + "vh";
-          character!.style.left = characterData.left + "vw";
+          character!.style.top = viewportToPixels(characterData.top, "vh") + "px";
+          character!.style.left = viewportToPixels(characterData.left, "vw") + "px";
         }
       })
     },[socket])
@@ -84,6 +84,16 @@ const GamePage = () => {
           <button style={{position: "fixed", bottom: "0px", left: "0px"}} onClick={handleFullscreenToggle}>Full Screen</button>
       </div>
     )
+  }
+
+  function viewportToPixels(percentage: number, unit: 'vh' | 'vw'): number {
+    if (unit !== 'vh' && unit !== 'vw') {
+      throw new Error('Invalid unit. Use "vh" or "vw".');
+    }
+  
+    const viewportSize = unit === 'vh' ? window.innerHeight : window.innerWidth;
+    const pixels = (percentage / 100) * viewportSize;
+    return pixels;
   }
 
   function pixelsToViewport(pixels: number, unit: 'vh' | 'vw'): string {
@@ -196,7 +206,5 @@ const GamePage = () => {
       document.onmousemove = null;
     }
   }
-
-
 
   export default GamePage
