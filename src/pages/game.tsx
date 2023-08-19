@@ -73,22 +73,27 @@ const GamePage = () => {
           const character = document.getElementById(characterData.characterId) as HTMLDivElement;
           character!.style.top = viewportToPixels(characterData.top.toString().split("v")[0], "vh") + "px";
           character!.style.left = viewportToPixels(characterData.left.toString().split("v")[0], "vw") + "px";
-          character.style.display = "none"
-          setTimeout(() => {
+            character.style.display = "none"
+            setTimeout(() => {
             character.style.display = "flex"
           }, 200)
-          
         }
       })
     },[socket])
 
   
     return (
-      <div id="game-map" style={{width: "1400px", height: "800px", backgroundImage: `url("${map}")`, backgroundSize: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
-          {characterElements}
-          <button style={{position: "fixed", bottom: "0px", right: "0px"}} onClick={setMapFromAPI}>Update Map</button>
-          <button style={{position: "fixed", bottom: "0px", left: "0px"}} onClick={handleFullscreenToggle}>Full Screen</button>
-      </div>
+      <>
+        <div id="game-map" style={{width: "1400px", height: "800px", backgroundImage: `url("${map}")`, backgroundSize: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
+            {characterElements}
+            <button style={{position: "fixed", bottom: "0px", right: "0px"}} onClick={setMapFromAPI}>Update Map</button>
+            <button style={{position: "fixed", bottom: "0px", left: "0px"}} onClick={handleFullscreenToggle}>Full Screen</button>
+        </div>
+        <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", backgroundColor: "black", zIndex: 9999, opacity: ".75", display: "flex", justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
+          <h3>To move your character, turn your phone to a landscape position and go full screen.</h3>
+          <button onClick={handleFullscreenToggle}>Full Screen</button>
+        </div>
+      </>
     )
   }
 
@@ -121,7 +126,7 @@ const GamePage = () => {
       const charDimensions = {left: pixelsToViewport(dimensions[0].left, "vw"), top: pixelsToViewport(dimensions[0].top, "vh"), characterId: character.id}
       charArray.push(charDimensions)
     }
-    if(window.innerWidth > 400) {
+    if(document.fullscreenElement) {
       socket.emit("send_message", {
         dimensions: charArray
       })
