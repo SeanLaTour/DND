@@ -70,8 +70,8 @@ const GamePage = () => {
           const characterData = charData[i]
           const character = document.getElementById(characterData.characterId) as HTMLDivElement;
           console.log(character)
-          character!.style.top = characterData.top + "px";
-          character!.style.left = characterData.left + "px";
+          character!.style.top = characterData.top + "vh";
+          character!.style.left = characterData.left + "vw";
         }
       })
     },[socket])
@@ -86,13 +86,23 @@ const GamePage = () => {
     )
   }
 
+  function pixelsToViewport(pixels: number, unit: 'vh' | 'vw'): string {
+    if (unit !== 'vh' && unit !== 'vw') {
+      throw new Error('Invalid unit. Use "vh" or "vw".');
+    }
+  
+    const viewportSize = unit === 'vh' ? window.innerHeight : window.innerWidth;
+    const percentage = (pixels / viewportSize) * 100;
+    return `${percentage}${unit}`;
+  }
+
   const sendMessage = () => {
     const characters = document.getElementsByClassName("character-element")
     const charArray = [];
     for(let i = 0; i < characters.length; i++) {
       const character = characters[i];
       const dimensions = character.getClientRects();
-      const charDimensions = {left: dimensions[0].left, top: dimensions[0].top, characterId: character.id}
+      const charDimensions = {left: pixelsToViewport(dimensions[0].left, "vw"), top: pixelsToViewport(dimensions[0].top, "vh"), characterId: character.id}
       charArray.push(charDimensions)
     }
     socket.emit("send_message", {
