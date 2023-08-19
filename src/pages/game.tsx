@@ -71,11 +71,13 @@ const GamePage = () => {
         for(let i = 0; i < charData.length; i++) {
           const characterData = charData[i]
           const character = document.getElementById(characterData.characterId) as HTMLDivElement;
-          console.log(character)
-          console.log(characterData)
-          console.log(viewportToPixels(characterData.top, "vh") + "px")
           character!.style.top = viewportToPixels(characterData.top.toString().split("v")[0], "vh") + "px";
           character!.style.left = viewportToPixels(characterData.left.toString().split("v")[0], "vw") + "px";
+          character.style.display = "none"
+          setTimeout(() => {
+            character.style.display = "flex"
+          }, 200)
+          
         }
       })
     },[socket])
@@ -127,11 +129,23 @@ const GamePage = () => {
   }
 
   const characterGenerate = (characters: any) => {
+    const colorArray = [
+      "rgba(0, 150, 136, 0.5)",   // Teal
+      "rgba(255, 193, 7, 0.5)",   // Mustard
+      "rgba(106, 90, 205, 0.5)",  // Slate Blue
+      "rgba(128, 128, 0, 0.5)",   // Olive
+      "rgba(255, 111, 97, 0.5)",  // Coral
+      "rgba(150, 123, 182, 0.5)", // Lavender
+      "rgba(255, 112, 51, 0.5)",  // Burnt Orange
+      "rgba(64, 224, 208, 0.5)",  // Mint
+      "rgba(218, 165, 32, 0.5)",  // Goldenrod
+      "rgba(154, 205, 50, 0.5)"   // Periwinkle
+    ];
     return characters.map((element: any, index: number) => {
         return(
-            <div className={"character-element character-card"} id={element.player} style={{color: "white", borderRadius: "5px", padding: ".25rem", position: "absolute", left: `${index * 10}%`, backgroundColor: "rgb(33,33,33,.5)"}} key={index}>
+            <div className={"character-element character-card"} id={element.player} style={{color: "black", borderStyle: "solid", borderColor: "black", borderWidth: "2px", borderRadius: "5px", padding: ".25rem", position: "absolute", left: `${index * 10}%`, backgroundColor: colorArray[index], display: "flex", justifyContent: "center", alignItems: "center"}} key={index}>
                 <img style={{padding: "0px", margin: "0px", width: "1.5rem"}} src={element.image}></img>
-                <p style={{padding: "0px", margin: "0px", fontSize: ".5rem"}}> {element.character}</p>
+                <p style={{marginLeft: ".5rem", padding: "0px", margin: "0px", fontSize: ".5rem"}}> {element.character}</p>
             </div>
         )
     });
