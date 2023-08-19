@@ -12,7 +12,7 @@ const API = "https://dnd-socket-server-851241f4eb52.herokuapp.com"
 const socket = io.connect(API)
 
 const GamePage = () => {
-    const [map, setMap]: any = React.useState("https://w0.peakpx.com/wallpaper/352/733/HD-wallpaper-storm-bringer-wings-lighting-danger-ocean-sailing-beautiful-sky-dragon-storm-sea-hayaken-water-ship-dark-sea-monster-night.jpg")
+    const [map, setMap]: any = React.useState("")
     const [characters, setCharacters] = React.useState([])
     const [characterElements, setCharacterElements] = React.useState([])
     const [isFullscreen, setIsFullscreen] = useState(false);
@@ -55,16 +55,6 @@ const GamePage = () => {
         .catch(error => {
           console.error('Error:', error);
         });
-      setTimeout(() => {
-        $.get(API + "/map", res => {
-          setMap(res.map)
-        })
-        $.get(API + "/characters").done(res => {
-          if(res.characters) {
-            setCharacters(JSON.parse(res.characters))
-          }
-        })
-      },1000)
     }
 
     useEffect(() => {
@@ -82,7 +72,9 @@ const GamePage = () => {
         document.addEventListener("touchend", sendMessage)
         setInterval(() => {
           $.get(API + "/map", res => {
-            setMap(res.map)
+            if(res) {
+              setMap(res.map)
+            }
           })
           $.get(API + "/characters").done(res => {
             if(res.characters) {
