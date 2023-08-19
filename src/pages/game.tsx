@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import "../css/character.css"
 import io from "socket.io-client"
 import $ from 'jquery';
+import { FaSyncAlt } from "react-icons/fa"
 
 const API = "https://dnd-socket-server-851241f4eb52.herokuapp.com"
 // const API = "http://localhost:3000"
@@ -91,6 +92,7 @@ const GamePage = () => {
         </div>
         <div style={{position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", backgroundColor: "black", zIndex: 9999, opacity: ".75", display: "flex", justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
           <h3>To move your character, turn your phone to a landscape position and go full screen.</h3>
+          <FaSyncAlt className="enlarged-icon" style={{marginBottom: "2.5rem", marginTop: "1.5rem", fontSize: "10vw"}} />
           <button onClick={handleFullscreenToggle}>Full Screen</button>
         </div>
       </>
