@@ -119,9 +119,11 @@ const GamePage = () => {
       const charDimensions = {left: pixelsToViewport(dimensions[0].left, "vw"), top: pixelsToViewport(dimensions[0].top, "vh"), characterId: character.id}
       charArray.push(charDimensions)
     }
-    socket.emit("send_message", {
-      dimensions: charArray
-    })
+    if(window.innerWidth > 400) {
+      socket.emit("send_message", {
+        dimensions: charArray
+      })
+    }
   }
 
   const characterGenerate = (characters: any) => {
