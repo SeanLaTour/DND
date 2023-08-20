@@ -2,6 +2,10 @@
     animation: fade-in .5s ease-in-out;
 }
 
+h1, h2, h3, h4, h5, p, a, li, button, textarea, input {
+    font-family: fantasy;
+}
+
 @keyframes fade-in {
     0% {
         opacity: 0;

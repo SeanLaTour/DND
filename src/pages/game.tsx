@@ -25,14 +25,26 @@ const GamePage = () => {
       if (!isFullscreen) {
         if (targetElement.requestFullscreen) {
           targetElement.requestFullscreen();
-        } else if (targetElement.requestFullscreen) {
-          targetElement.requestFullscreen();
+          // @ts-ignore
+        } else if (targetElement.webkitRequestFullscreen) {
+          // @ts-ignore
+          targetElement.webkitRequestFullscreen();
+          // @ts-ignore
+        } else if (targetElement.msRequestFullscreen) {
+          // @ts-ignore
+          targetElement.msRequestFullscreen();
         }
       } else {
         if (document.exitFullscreen) {
           document.exitFullscreen();
-        } else if (document.exitFullscreen) {
-          document.exitFullscreen();
+          // @ts-ignore
+        } else if (document.webkitExitFullscreen) {
+          // @ts-ignore
+          document.webkitExitFullscreen();
+          // @ts-ignore
+        } else if (document.msExitFullscreen) {
+          // @ts-ignore
+          document.msExitFullscreen();
         }
       }
       setIsFullscreen(!isFullscreen);
@@ -122,9 +134,10 @@ const GamePage = () => {
             {characterElements}
             <button style={{position: "fixed", bottom: "0px", left: "0px"}} onClick={handleFullscreenToggle}>Full Screen</button>
         </div>
+
         <div style={{position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundColor: "black", zIndex: 9999, opacity: ".75", display: "flex", justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
-          <div style={{height: "75vh", backgroundColor: "#222", textAlign: "center", width: "75vw", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", padding: "1.5rem", borderRadius: "3px" }}>
-            <h3 >To move your character, turn your phone to a landscape position and go full screen.</h3>
+          <div style={{height: "50vh", backgroundColor: "#222", textAlign: "center", width: "75vw", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", padding: "1.5rem", borderRadius: "3px" }}>
+            <h3 style={{textAlign: "left", fontFamily: "fantasy", borderRadius: "3px"}} >To move your character, turn your phone to a landscape position and go full screen.</h3>
             <FaSyncAlt className="enlarged-icon" style={{marginBottom: "2.5rem", marginTop: "1.5rem", fontSize: "25vw"}} />
             <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={handleFullscreenToggle}>Full Screen</button>
             <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={openMenuModal}>Menu</button>
