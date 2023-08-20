@@ -140,9 +140,10 @@ const GamePage = () => {
         </div>
 
         <div style={{position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundImage: `url(${MainMenuBackground})`, backgroundSize: "cover", backgroundPosition: "center", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
-          <div style={{opacity: ".97", height: "50vh", backgroundColor: "#222", textAlign: "center", width: "75vw", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", padding: "1.5rem", borderRadius: "3px" }}>
-            <h3 style={{textAlign: "left", fontFamily: "fantasy", borderRadius: "3px"}} >To move your character, turn your phone to a landscape position and go full screen.</h3>
-            <FaSyncAlt className="enlarged-icon" style={{marginBottom: "2.5rem", marginTop: "1.5rem", fontSize: "25vw"}} />
+          <div style={{height: "70vh", backgroundColor: "#fff", color: "black", borderStyle: "solid", opacity: ".95", textAlign: "center", width: "75vw", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", padding: "1.5rem", borderRadius: "3px" }}>
+            <h2 style={{textAlign: "left", fontFamily: "fantasy", borderRadius: "3px"}} >Welcome.</h2>
+            <h3 style={{textAlign: "left", fontFamily: "fantasy", borderRadius: "3px"}} >To view the map, and to move your character, turn your phone to a landscape position and go full screen.</h3>
+            <img style={{width: "50vw"}} src="https://t3.ftcdn.net/jpg/03/65/32/08/360_F_365320832_3Lb65Z4SjHlWaOGr14gxitKM3dHLWf1Q.jpg"></img>
             <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={handleFullscreenToggle}>Full Screen</button>
             <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={openMenuModal}>Menu</button>
           </div>
