@@ -3,6 +3,10 @@ import "../css/character.css"
 import io from "socket.io-client"
 import $ from 'jquery';
 import { FaSyncAlt } from "react-icons/fa"
+// @ts-ignore
+import MapMenuBackground from "../images/mapMenu.jpg"
+// @ts-ignore
+import MainMenuBackground from "../images/mainMenu.jpg"
 
 const API = "https://dnd-socket-server-851241f4eb52.herokuapp.com" 
 // const API = "http://localhost:3000"
@@ -135,8 +139,8 @@ const GamePage = () => {
             <button style={{position: "fixed", bottom: "0px", left: "0px"}} onClick={handleFullscreenToggle}>Full Screen</button>
         </div>
 
-        <div style={{position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundColor: "black", zIndex: 9999, opacity: ".75", display: "flex", justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
-          <div style={{height: "50vh", backgroundColor: "#222", textAlign: "center", width: "75vw", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", padding: "1.5rem", borderRadius: "3px" }}>
+        <div style={{position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundImage: `url(${MainMenuBackground})`, backgroundSize: "cover", backgroundPosition: "center", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
+          <div style={{opacity: ".97", height: "50vh", backgroundColor: "#222", textAlign: "center", width: "75vw", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", padding: "1.5rem", borderRadius: "3px" }}>
             <h3 style={{textAlign: "left", fontFamily: "fantasy", borderRadius: "3px"}} >To move your character, turn your phone to a landscape position and go full screen.</h3>
             <FaSyncAlt className="enlarged-icon" style={{marginBottom: "2.5rem", marginTop: "1.5rem", fontSize: "25vw"}} />
             <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={handleFullscreenToggle}>Full Screen</button>
@@ -144,9 +148,9 @@ const GamePage = () => {
           </div>
         </div>
 
-        <div id="menu-modal" style={{display: "none", position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundColor: "black", zIndex: 999999, justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
-          <h1>Menu</h1>
-          <div style={{backgroundColor: "#222", borderStyle: "solid", borderColor: "white", paddingBlock: ".5rem", borderRadius: "3px", width: "75vw", height: "25vh", overflow: "scroll", display: "grid", gridTemplateColumns: 'repeat(3, 1fr)', marginBottom: "1rem"}}>
+        <div id="menu-modal" style={{display: "none", position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundImage: `url(${MapMenuBackground})`, backgroundSize: "cover", backgroundPosition: "center", zIndex: 999999, justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
+          <h1 style={{position: "fixed", top: "0", width: "100vw", textAlign: "center", color: "black"}}>Menu</h1>
+          <div style={{backgroundColor: "#fff" , opacity: ".9", borderStyle: "solid", borderColor: "black", paddingBlock: ".5rem", borderRadius: "3px", width: "75vw", height: "17.5vh", overflow: "scroll", display: "grid", gridTemplateColumns: 'repeat(3, 1fr)', marginBottom: "1rem"}}>
           {mapList.map(map => {
             return(
               <img onClick={() => {
@@ -165,13 +169,13 @@ const GamePage = () => {
                   .catch(error => {
                     console.error('Error:', error);
                   });
-              }} style={{width: "17.5vw", borderStyle: "solid", margin: "1rem"}} src={map}></img>
+              }} style={{width: "17.5vw", height: "12vw", borderStyle: "solid", margin: "3.25vw"}} id={Math.random().toString()} src={map}></img>
             )
           })}
           </div>
-          <textarea placeholder="Enter map url..." style={{width: "75vw", height: "25vh"}} id="map-text-area"></textarea>
-          <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={setMapFromAPI}>Update Map</button>
-          <button style={{color: "black", width:  "75vw", marginTop: "2rem", padding: "1rem"}} onClick={closeMenuModal}>Close</button>
+          <textarea placeholder="Enter map url..." style={{width: "74vw", height: "10vh"}} id="map-text-area"></textarea>
+          <button style={{color: "black", width: "75vw", marginTop: "2vw", padding: "1rem"}} onClick={setMapFromAPI}>Update Map</button>
+          <button style={{color: "black", width:  "75vw", marginTop: "2vw", padding: "1rem"}} onClick={closeMenuModal}>Close</button>
         </div>
       </>
     )
