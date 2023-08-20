@@ -6,6 +6,12 @@ h1, h2, h3, h4, h5, p, a, li, button, textarea, input {
     font-family: fantasy;
 }
 
+button, .game-map {
+    background-color: #6B1700;
+    opacity: .9;
+    color: white !important;
+}
+
 @keyframes fade-in {
     0% {
         opacity: 0;
