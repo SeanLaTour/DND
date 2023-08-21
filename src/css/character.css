@@ -11,7 +11,7 @@ html,body
     overflow-x: hidden; 
 }
 
-h1, h2, h3, h4, h5, p, a, li, button, textarea, input {
+h1, h2, h3, h4, h5, p, a, li, button, textarea, input, div {
     font-family: fantasy;
 }
 
@@ -19,6 +19,14 @@ button, .game-map {
     background-color: #6B1700;
     opacity: .9;
     color: white !important;
+}
+
+.map-image {
+    border-width: 3px;
+}
+
+.map-image:active {
+    border-color: #00AA8C !important;
 }
 
 .turn-phone-warning {
