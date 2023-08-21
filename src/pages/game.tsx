@@ -113,6 +113,18 @@ const GamePage = () => {
             }
           })
         },10000)
+        window.addEventListener('resize', () => {
+          // const turnPhoneNotification = document.getElementById("turn-phone-warning") as HTMLDivElement;
+          const menuModal = document.getElementById("game-menu")! as HTMLDivElement;
+          if(window.innerWidth < 450) {
+            menuModal.style.display = "flex"
+          }
+          else {
+            menuModal.style.display = "none"
+          }
+          console.log(menuModal)
+          
+        })
     },[map])
 
     useEffect(() => {
@@ -134,22 +146,25 @@ const GamePage = () => {
   
     return (
       <>
+        {/* <div id="turn-phone-warning" style={{zIndex: 99999999, width: "100vw", height: "100vh", backgroundColor: "black", opacity: .75}}>
+          <p>yo</p>
+        </div> */}
         <div id="game-map" style={{width: "100vw", height: "100vh", backgroundImage: `url("${map}")`, backgroundSize: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
             {characterElements}
             <button style={{position: "fixed", bottom: "0px", right: "0px"}} onClick={handleFullscreenToggle}>Exit</button>
         </div>
 
-        <div style={{position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundImage: `url(${MainMenuBackground})`, backgroundSize: "cover", backgroundPosition: "center", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
+        <div id="game-menu" style={{position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundImage: `url(${MainMenuBackground})`, backgroundSize: "cover", backgroundPosition: "center", zIndex: 99, display: "flex", justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
           <div style={{height: "70vh", backgroundColor: "#fff", color: "black", borderStyle: "solid", opacity: ".95", textAlign: "center", width: "75vw", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", padding: "1.5rem", borderRadius: "3px" }}>
             <h1 style={{textAlign: "left", fontFamily: "fantasy", borderRadius: "3px"}} >Welcome.</h1>
             <h3 style={{textAlign: "justify", fontFamily: "fantasy", borderRadius: "3px"}} >To view the map, and to move your character, turn your phone to a landscape position and go full screen.</h3>
             <img style={{width: "50vw"}} src="https://t3.ftcdn.net/jpg/03/65/32/08/360_F_365320832_3Lb65Z4SjHlWaOGr14gxitKM3dHLWf1Q.jpg"></img>
-            <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={handleFullscreenToggle}>Full Screen</button>
-            <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={openMenuModal}>Map</button>
+            <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={handleFullscreenToggle}>Enter Game</button>
+            <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={openMenuModal}>Edit Map</button>
           </div>
         </div>
 
-        <div id="menu-modal" style={{ display: "none", position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundImage: `url(${MapMenuBackground})`, backgroundSize: "cover", backgroundPosition: "center", zIndex: 999999, justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
+        <div id="menu-modal" style={{ display: "none", position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundImage: `url(${MapMenuBackground})`, backgroundSize: "cover", backgroundPosition: "center", zIndex: 9999, justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
           <h1 style={{position: "fixed", top: "0", width: "100vw", textAlign: "center", color: "black"}}>Map</h1>
           <div style={{backgroundColor: "#fff" , opacity: ".9", borderStyle: "solid", borderColor: "black", paddingBlock: ".5rem", borderRadius: "3px", width: "75vw", height: "fit-content", maxHeight: "40vh", overflow: "scroll", display: "grid", gridTemplateColumns: 'repeat(3, 1fr)'}}>
           {mapList.map(map => {
