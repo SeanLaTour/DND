@@ -84,6 +84,28 @@ const GamePage = () => {
           });
     }
 
+    function touchHandler(event: any) {
+      if(event.touches.length > 1) {
+          event.preventDefault()
+      }
+    }
+
+    function disableZoom() {
+      document.addEventListener('gesturestart', function(e) {
+        e.preventDefault();
+        touchHandler(e)
+      });
+      document.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+        touchHandler(e)
+      });
+    }
+    
+    // Call the function when the page loads
+    window.onload = function() {
+      disableZoom();
+    };
+
     useEffect(() => {
         $.get(API + "/characters").done(res => {
           if(res.characters) {
