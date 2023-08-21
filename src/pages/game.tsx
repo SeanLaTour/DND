@@ -162,9 +162,8 @@ const GamePage = () => {
 
         <div id="menu-modal" style={{ display: "none", position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundImage: `url(${MapMenuBackground})`, backgroundSize: "cover", backgroundPosition: "center", zIndex: 9999, justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
           <h1 style={{position: "fixed", top: "0", width: "100vw", textAlign: "center", color: "black"}}>Map</h1>
-          <div style={{borderColor: "black", borderStyle: "solid", borderRadius: "3px", backgroundColor: "white", width: "75vw", color: "black", textAlign: "center", display: "flex", marginBlock: "2vh", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
+          <div style={{backgroundColor: "#7A301C", borderColor: "black", borderStyle: "solid", opacity: ".95", color: "white", borderRadius: "3px", width: "75vw", textAlign: "center", display: "flex", marginBlock: "2vh", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
           Current Map
-
           <img src={map} style={{width: "75vw"}}></img>
           </div>
           <div style={{marginBottom: "2vh", overflow: "scroll", backgroundColor: "#fff" , opacity: ".9", borderStyle: "solid", borderColor: "black", paddingBlock: ".5rem", borderRadius: "3px", width: "75vw", height: "20vh", display: "grid", gridTemplateColumns: 'repeat(3, 1fr)'}}>
@@ -193,7 +192,7 @@ const GamePage = () => {
             )
           })}
           </div>
-          <textarea placeholder="Enter map url..." style={{width: "74vw", height: "10vh", opacity: .9}} id="map-text-area"></textarea>
+          <textarea placeholder="Enter map url..." style={{padding: ".25rem", width: "74vw", height: "10vh", opacity: .9}} id="map-text-area"></textarea>
           <button style={{color: "black", width: "75vw", marginTop: "2vw", padding: "1rem"}} onClick={setMapFromAPI}>Add Map</button>
           <button style={{color: "black", width:  "75vw", marginTop: "2vw", padding: "1rem"}} onClick={closeMenuModal}>Return</button>
         </div>
