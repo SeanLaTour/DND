@@ -23,6 +23,7 @@ const GamePage = () => {
     const [characterElements, setCharacterElements] = React.useState([])
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [mapList, setMapList] = useState([])
+    const [selectedCharacter, setSelectedCharacter] = useState("")
 
     const handleFullscreenToggle = () => {
     const targetElement = document.getElementById("game-map")! as HTMLDivElement;
@@ -59,6 +60,7 @@ const GamePage = () => {
 
     function setMapFromAPI() {
       const mapInput = document.getElementById("map-text-area") as HTMLInputElement;
+      if(mapInput.value.length <= 1) return
       const options = {
         method: 'POST',
         headers: {
@@ -178,11 +180,46 @@ const GamePage = () => {
             <h3 style={{textAlign: "justify", fontFamily: "fantasy", borderRadius: "3px"}} >To view the map, and to move your character, turn your phone to a landscape position.</h3>
             <img style={{width: "50vw"}} src="https://t3.ftcdn.net/jpg/03/65/32/08/360_F_365320832_3Lb65Z4SjHlWaOGr14gxitKM3dHLWf1Q.jpg"></img>
             <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={openMenuModal}>Edit Map</button>
+            <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={openCharacterModal}>Edit Characters</button>
             <button style={{color: "black", width: "75vw", marginTop: "2rem", padding: "1rem"}} onClick={handleFullscreenToggle}>Full Screen (PC & Android)</button>
           </div>
         </div>
 
-        <div id="menu-modal" style={{ display: "none", position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundImage: `url(${MapMenuBackground})`, backgroundSize: "cover", backgroundPosition: "center", zIndex: 9999, justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
+        <div id="character-modal" style={{ display: "none", position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundImage: `url(${MapMenuBackground})`, backgroundSize: "cover", backgroundPosition: "center", zIndex: 9999, justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
+          <h1 style={{position: "fixed", top: "0", width: "100vw", textAlign: "center", color: "black"}}>Characters</h1>
+          <div style={{marginBottom: "2vh", overflow: "scroll", backgroundColor: "#fff" , opacity: ".9", borderStyle: "solid", borderColor: "black", paddingBlock: ".5rem", borderRadius: "3px", width: "75vw", height: "34vh", display: "grid", gridTemplateColumns: 'repeat(3, 1fr)'}}>
+          {characters.map(character => {
+            if(!character) {
+              return;
+            }
+            return(
+              <div id={character.character} onClick={(e) => {
+                setSelectedCharacter(e.target.id)
+                const thisDiv = document.getElementById(e.target.id)
+                thisDiv!.style.borderColor = "#00AA8C"
+              }} style={{height: "50%", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "3px", borderStyle: "solid", borderColor: "black", flexDirection: "column", margin: "2vw" }}>
+                <img className="character-image" style={{width: "fit-content", height: "12vw", borderStyle: "solid", borderColor: "black", margin: "10%"}} id={character.character} src={character.image}></img>
+                  <p style={{color: "black"}}>{character.character}</p>
+                </div>
+              )
+            })}
+          </div>
+          <input style={{width: "75vw", marginBottom: "1vh"}} placeholder="Player" id="add-player-input">
+        </input>
+        <input style={{width: "75vw", marginBottom: "1vh"}} placeholder="Character Name" id="add-character-input">
+        </input>
+        <input style={{width: "75vw", marginBottom: "1vh"}} placeholder="Character Image" id="add-character-image-input">
+        </input>
+          <button style={{color: "black", width: "75vw", marginTop: "2vw", padding: "1rem"}} onClick={() => {
+            addCharacter(characters, setCharacters)
+          }}>Add Character</button>
+          <button style={{color: "black", width: "75vw", marginTop: "2vw", padding: "1rem"}} onClick={() => {
+            deleteCharacter(characters, setCharacters, selectedCharacter)
+          }}>Remove Character</button>
+          <button style={{color: "black", width:  "75vw", marginTop: "2vw", padding: "1rem"}} onClick={closeCharacterModal}>Return</button>
+        </div>
+
+        <div id="map-modal" style={{ display: "none", position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundImage: `url(${MapMenuBackground})`, backgroundSize: "cover", backgroundPosition: "center", zIndex: 9999, justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
           <h1 style={{position: "fixed", top: "0", width: "100vw", textAlign: "center", color: "black"}}>Map</h1>
           <div style={{backgroundColor: "#7A301C", borderColor: "black", borderStyle: "solid", opacity: ".95", color: "white", borderRadius: "3px", width: "75vw", textAlign: "center", display: "flex", marginBlock: "2vh", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
           Current Map
@@ -223,15 +260,23 @@ const GamePage = () => {
   }
 
   function openMenuModal() {
-    const menuModal = document.getElementById("menu-modal")! as HTMLDivElement;
+    const menuModal = document.getElementById("map-modal")! as HTMLDivElement;
     menuModal!.style.display = "flex";
-    console.log(menuModal)
   }
 
   function closeMenuModal() {
-    const menuModal = document.getElementById("menu-modal")! as HTMLDivElement;
+    const menuModal = document.getElementById("map-modal")! as HTMLDivElement;
     menuModal!.style.display = "none";
-    console.log(menuModal)
+  }
+
+  function openCharacterModal() {
+    const characterModal = document.getElementById("character-modal")! as HTMLDivElement;
+    characterModal!.style.display = "flex";
+  }
+
+  function closeCharacterModal() {
+    const characterModal = document.getElementById("character-modal")! as HTMLDivElement;
+    characterModal!.style.display = "none";
   }
 
   function viewportToPixels(percentage: number, unit: 'vh' | 'vw'): number {
@@ -368,5 +413,77 @@ const GamePage = () => {
       document.onmousemove = null;
     }
   }
+
+  function addCharacter(characterList: any, setCharacters: Function) {
+    const characterInput = document.getElementById("add-character-input")! as HTMLInputElement;
+    const characterImageInput = document.getElementById("add-character-image-input")! as HTMLInputElement;
+    const characterPlayerInput = document.getElementById("add-player-input")! as HTMLInputElement;
+    const character = {
+      player: characterPlayerInput.value,
+      character: characterInput.value,
+      image: characterImageInput.value,
+      id: characterPlayerInput.value
+    }
+  
+    characterList.push(character)
+  
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain'
+      },
+      body: JSON.stringify(characterList)
+    };
+  
+    console.log(options)
+    fetch(API + "/characters", options)
+      .then(data => {
+        console.log('Response from server:', data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+    console.log(characterList)
+    setCharacters(characterList)
+    return
+    }
+
+    function deleteCharacter(characterList: any, setCharacters: Function, selectedCharacter: string) {
+      if(!selectedCharacter) return;
+      const characterElementSelected = document.getElementById(selectedCharacter) as HTMLDivElement;
+      if(!characterElementSelected.id) return;
+
+      let newCharArray: any[] = [];
+
+      characterList.forEach(element => {
+        if(element.character !== characterElementSelected.id) {
+          newCharArray.push(element)
+        }
+      });
+      characterList = newCharArray
+      console.log(characterList)
+    
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify(characterList)
+      };
+    
+      console.log(options)
+      fetch(API + "/characters", options)
+        .then(data => {
+          console.log('Response from server:', data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+  
+      console.log(characterList)
+      setCharacters(characterList)
+      return
+      }
 
   export default GamePage
