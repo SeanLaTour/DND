@@ -188,13 +188,19 @@ const GamePage = () => {
         <div id="character-modal" style={{ display: "none", position: "fixed", top: 0, left: 0, width: "102vw", height: "102vh", backgroundImage: `url(${MapMenuBackground})`, backgroundSize: "cover", backgroundPosition: "center", zIndex: 9999, justifyContent: "center", alignItems: "center", color: "white", flexDirection: "column"}}>
           <h1 style={{position: "fixed", top: "0", width: "100vw", textAlign: "center", color: "black"}}>Characters</h1>
           <div style={{marginBottom: "2vh", overflow: "scroll", backgroundColor: "#fff" , opacity: ".9", borderStyle: "solid", borderColor: "black", paddingBlock: ".5rem", borderRadius: "3px", width: "75vw", height: "34vh", display: "grid", gridTemplateColumns: 'repeat(3, 1fr)'}}>
-          {characters.map(character => {
+          {characters.map((character: {
+            character: string,
+            id: string,
+            image: string
+          }) => {
             if(!character) {
               return;
             }
             return(
               <div id={character.character} onClick={(e) => {
+                // @ts-ignore
                 setSelectedCharacter(e.target.id)
+                // @ts-ignore
                 const thisDiv = document.getElementById(e.target.id)
                 thisDiv!.style.borderColor = "#00AA8C"
               }} style={{height: "50%", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "3px", borderStyle: "solid", borderColor: "black", flexDirection: "column", margin: "2vw" }}>
@@ -456,7 +462,7 @@ const GamePage = () => {
 
       let newCharArray: any[] = [];
 
-      characterList.forEach(element => {
+      characterList.forEach((element: any) => {
         if(element.character !== characterElementSelected.id) {
           newCharArray.push(element)
         }
